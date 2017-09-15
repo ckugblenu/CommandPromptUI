@@ -37,7 +37,7 @@ public class FXMLDocumentController implements Initializable {
     private ImageView terminalTab, loopTab;
 
     @FXML
-    private AnchorPane commandWindow, loopWindow;
+    private AnchorPane commandWindow, loopWindow, mainWindow;
 
     @FXML
     private Button runButton, clearButton, launchLoopButton;
@@ -53,6 +53,7 @@ public class FXMLDocumentController implements Initializable {
     
 
     @FXML
+    // Method to switch between Command Window and Loop Window
     private void handleButtonAction(MouseEvent event) {
 
         if (event.getTarget() == terminalTab) {
@@ -78,7 +79,11 @@ public class FXMLDocumentController implements Initializable {
 
             // get the stdout and stderr from the command that was run
             StringBuilder stdout = commandExecutor.getStandardOutputFromCommand();
+            StringBuilder stderr = commandExecutor.getStandardErrorFromCommand();
             resultText.setText(stdout.toString());
+            if (!stderr.toString().equals("")) {
+                mainWindow.setStyle("-fx-background-color: #ff0000");
+            }
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -119,12 +124,3 @@ public class FXMLDocumentController implements Initializable {
     }
 
 }
-//
-//textField.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
-//                    vehiclePrice_TextField.setText(oldValue);
-//                }
-//            }
-//        });
